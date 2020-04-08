@@ -92,6 +92,16 @@ end.reject { _1.empty? }
 grouped_range_list = range_list.group_by { _1.first }
 sorted_range_list = grouped_range_list.sort_by { _1.first }
 
-sorted_range_list.map do |key, value|
+result = sorted_range_list.map do |key, value|
   [key, value.map { _1.last }.max]
 end
+
+require "csv"
+
+CSV.open("age_buckets.csv", "wb") do |csv|
+  result.each do
+    csv << [_1, _2]
+  end
+end
+
+pp result
